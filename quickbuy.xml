@@ -1,0 +1,24 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	<Frame>
+      <Scripts> 
+			<OnLoad> 
+				this:RegisterEvent('ADDON_LOADED')
+			</OnLoad>
+			<OnEvent> 
+				if arg1 == 'Blizzard_AuctionUI' then
+				local orig = BrowseButton_OnClick
+					BrowseButton_OnClick = function()
+						if IsAltKeyDown() then
+							local button = this
+							local auction_index = button:GetID() + FauxScrollFrame_GetOffset(BrowseScrollFrame)
+							local buyout_price = ({GetAuctionItemInfo("list", auction_index)})[9]
+							PlaceAuctionBid("list", auction_index, buyout_price)
+						else
+							orig(b)
+						end
+					end
+				end
+			</OnEvent> 
+		</Scripts> 
+	</Frame>
+</Ui>
